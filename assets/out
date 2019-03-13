@@ -11,11 +11,11 @@ source=$1
 payload=$(mktemp kubectl-resource-request.XXXXXX)
 cat > $payload <&0
 
-CONCOURSE=true
-DANGER_GITHUB_API_TOKEN=$(jq -r '.source.github_api_token // ""' < $payload)
-DANGER_GITHUB_HOST=$(jq -r '.source.github_host // "github.com"' < $payload)
-DANGER_GITHUB_API_BASE_URL=$(jq -r '.source.github_api_base_url // "https://api.github.com"' < $payload)
-REPO_SLUG=$(jq -r '.source.repo_slug // ""' < $payload)
+export CONCOURSE=true
+export DANGER_GITHUB_API_TOKEN=$(jq -r '.source.github_api_token // ""' < $payload)
+export DANGER_GITHUB_HOST=$(jq -r '.source.github_host // "github.com"' < $payload)
+export DANGER_GITHUB_API_BASE_URL=$(jq -r '.source.github_api_base_url // "https://api.github.com"' < $payload)
+export REPO_SLUG=$(jq -r '.source.repo_slug // ""' < $payload)
 
 workdir=$(jq -r '.params.workdir // "dangerfile.js"' < $payload)
 dangerfile=$(jq -r '.params.dangerfile // "dangerfile.js"' < $payload)
@@ -23,7 +23,7 @@ dangerfile=$(jq -r '.params.dangerfile // "dangerfile.js"' < $payload)
 cd $source/$workdir
 echo "[debug] after cd to workdir: $PWD"
 
-PULL_REQUEST_ID=$(git config --get pullrequest.id)
+export PULL_REQUEST_ID=$(git config --get pullrequest.id)
 echo "[debug] pr id: $PULL_REQUEST_ID"
 
 danger ci -d $dangerfile
