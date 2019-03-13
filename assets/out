@@ -20,7 +20,7 @@ REPO_SLUG=$(jq -r '.source.repo_slug // ""' < $payload)
 workdir=$(jq -r '.params.workdir // "dangerfile.js"' < $payload)
 dangerfile=$(jq -r '.params.dangerfile // "dangerfile.js"' < $payload)
 
-cd workdir
+cd $workdir
 echo "[debug] after cd to workdir: $PWD"
 
 PULL_REQUEST_ID=$(git config --get pullrequest.id)

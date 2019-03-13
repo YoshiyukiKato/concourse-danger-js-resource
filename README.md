@@ -7,10 +7,10 @@ This resource assumed to be used with [github pull request resource](https://git
 ## resource config
 |key|type|required|default|description|
 |--|--|--|--|--|
+|repo_slug|string|yes||`username/reponame` shaped string to identify target repository|
 |github_api_token|string|yes||access token of github|
 |github_host|string|no|github.com|required when using github enterprise|
 |github_api_base_url|string|no|https://api.github.com|required when using github enterprise|
-|repo_slug|string|yes||`username/reponame` shaped string to identify target repository|
 
 ## `check`
 ## `in`
@@ -24,7 +24,6 @@ This resource assumed to be used with [github pull request resource](https://git
 
 
 ```yaml
-# save this file as helloworld.yaml
 resource_types:
 - name: pull-request
   type: docker-image
