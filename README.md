@@ -37,7 +37,6 @@ resource_types:
     repository: yoshiyuki/concourse-danger-js-resource
 
 resources:
-resources:
 - name: src-pr
   type: pull-request
   source:
@@ -47,6 +46,7 @@ resources:
 - name: danger
   type: danger
   source:
+    repo_slug: your/repo
     github_api_token: your_access_token
 
 jobs:
@@ -56,5 +56,4 @@ jobs:
   - put: danger
     params:
       workdir: src-pr
-      repo_slug: your/repo
 ```
