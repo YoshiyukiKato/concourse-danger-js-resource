@@ -21,9 +21,12 @@ workdir=$(jq -r '.params.workdir // "dangerfile.js"' < $payload)
 dangerfile=$(jq -r '.params.dangerfile // "dangerfile.js"' < $payload)
 
 cd $source/$workdir
-echo "[debug] after cd to workdir: $PWD"
 
 export PULL_REQUEST_ID=$(git config --get pullrequest.id)
-echo "[debug] pr id: $PULL_REQUEST_ID"
+pr_head_ref = $(git rev-parse HEAD)
 
 danger ci -d $dangerfile
+
+echo '{ "version":{"ref":""},"metadata":[{"name":"pr","value":""}]}' | \
+        jq --arg REF "$pr_head_ref" '.version.ref = $REF' | \
+        jq --arg PR "$PULL_REQUEST_ID" '(.metadata[] | select(.name == "pr") | .value) = $PR' >&3
