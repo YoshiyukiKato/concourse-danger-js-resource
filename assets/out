@@ -23,7 +23,7 @@ dangerfile=$(jq -r '.params.dangerfile // "dangerfile.js"' < $payload)
 cd $source/$workdir
 
 export PULL_REQUEST_ID=$(git config --get pullrequest.id)
-pr_head_ref = $(git rev-parse HEAD)
+pr_head_ref=$(git rev-parse HEAD)
 
 danger ci -d $dangerfile
 
