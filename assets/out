@@ -19,7 +19,7 @@ export REPO_SLUG=$(jq -r '.source.repo_slug // ""' < $payload)
 
 workdir=$(jq -r '.params.workdir // "dangerfile.js"' < $payload)
 dangerfile=$(jq -r '.params.dangerfile // "dangerfile.js"' < $payload)
-package_json=$(jq -r '.params.package_json' // "" < $payload)
+package_json=$(jq -r '.params.package_json // ""' < $payload)
 
 cd $source/$workdir
 
@@ -27,7 +27,6 @@ export PULL_REQUEST_ID=$(git config --get pullrequest.id)
 pr_head_ref=$(git rev-parse HEAD)
 
 if [ -n "$package_json" ]; then
-  echo "[DEBUG] package.json path: $package_json"
   cp $package_json ./package.json
   npm install
 fi
