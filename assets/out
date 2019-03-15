@@ -28,6 +28,7 @@ pr_head_ref=$(git rev-parse HEAD)
 
 if [ -n "$package_json" ]; then
   cp $package_json ./package.json
+  npm install -g npm
   npm install
 fi
 
