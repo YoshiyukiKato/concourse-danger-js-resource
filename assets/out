@@ -19,21 +19,27 @@ export REPO_SLUG=$(jq -r '.source.repo_slug // ""' < $payload)
 
 workdir=$(jq -r '.params.workdir // "dangerfile.js"' < $payload)
 dangerfile=$(jq -r '.params.dangerfile // "dangerfile.js"' < $payload)
-package_json=$(jq -r '.params.package_json // ""' < $payload)
+package_jsons=$(jq -r '.params.package_json // []' < $payload)
+package_jsons_len=$(jq length <<< $package_jsons)
 
 cd $source/$workdir
 
 export PULL_REQUEST_ID=$(git config --get pullrequest.id)
 pr_head_ref=$(git rev-parse HEAD)
 
-if [ -n "$package_json" ]; then
-  cp $package_json ./package.json
+if [ $package_jsons_len -gt 0 ]; then
   npm install -g npm
+  echo '{}' > .acc.package.json
+  for i in $(seq 0 $(($package_jsons_len - 1))); do
+    package_json=$(jq -r .[$i] <<< $package_jsons)
+    acc_package_json=$(jq -s '.[0] * .[1]' .acc.package.json $package_json)
+    echo $acc_package_json > .acc.package.json
+  done
+  mv .acc.package.json package.json
   npm install
 fi
 
 danger ci -d $dangerfile
 
-echo '{ "ref" "", "version": {"pr":""} }' | \
-        jq --arg REF "$pr_head_ref" '.ref = $REF' | \
-        jq --arg PR "$PULL_REQUEST_ID" '.version.pr = $PR' >&3
+output=$(echo '{ "ref" : "", "version": {"pr":""} }' | jq --arg REF "$pr_head_ref" '.ref = $REF' | jq --arg PR "$PULL_REQUEST_ID" '.version.pr = $PR')
+echo $output >&3

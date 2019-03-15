@@ -21,7 +21,7 @@ This resource assumed to be used with [github pull request resource](https://git
 |--|--|--|--|--|
 |workdir|string|yes||path to workdir to exec `danger ci`|
 |dangerfile|string|no|dangerfile.js|path to dangerfile from workdir|
-|package_json|string|no||path to a package.json file. If you want to use danger plugins and some other npm modules in dangerfile.js, set them as dependencies or devDependencies in the package.json|
+|package_json|string[]|no||paths to package.json files. If you want to use danger plugins and some other npm modules in dangerfile.js, set them as dependencies or devDependencies in the package.json|
 
 
 ```yaml
