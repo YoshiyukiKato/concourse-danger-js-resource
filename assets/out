@@ -27,6 +27,7 @@ export PULL_REQUEST_ID=$(git config --get pullrequest.id)
 pr_head_ref=$(git rev-parse HEAD)
 
 if [ -n "$package_json" ]; then
+  echo "[DEBUG] package.json path: $package_json"
   cp $package_json ./package.json
   npm install
 fi
