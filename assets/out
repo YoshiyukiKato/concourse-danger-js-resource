@@ -16,6 +16,7 @@ export DANGER_GITHUB_API_TOKEN=$(jq -r '.source.github_api_token // ""' < $paylo
 export DANGER_GITHUB_HOST=$(jq -r '.source.github_host // "github.com"' < $payload)
 export DANGER_GITHUB_API_BASE_URL=$(jq -r '.source.github_api_base_url // "https://api.github.com"' < $payload)
 export REPO_SLUG=$(jq -r '.source.repo_slug // ""' < $payload)
+export SOURCE=$source
 
 workdir=$(jq -r '.params.workdir // "dangerfile.js"' < $payload)
 dangerfile=$(jq -r '.params.dangerfile // "dangerfile.js"' < $payload)
